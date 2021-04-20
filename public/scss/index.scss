@@ -1,0 +1,59 @@
+@import '_colors';
+@import '_layout';
+@import '_settings';
+
+.mockframe
+{
+.wrapper {
+    display: flex;  
+    flex-flow: row wrap;
+  
+  }
+  
+  .wrapper > * {
+    padding: 10px;
+    flex: 1 100%;
+  }
+  
+  header {
+    text-align: left;
+    @include border(green); 
+  }
+  
+  footer {
+    @include border(green);
+  }
+  
+  main {
+    text-align: left;
+    @include border(blue);
+  }
+  
+  .aside-1 {
+   
+    text-align: left;
+    @include border(orange);
+  }
+  
+  .aside-2 {
+    
+    text-align: left;
+    @include border(orange);
+  }
+  
+  @media all and (min-width: 600px) {
+    .aside { flex: 1 0 0; }
+  }
+  
+  @media all and (min-width: 800px) {
+    .main    { flex: 3 0px; }
+    .aside-1 { order: 1; } 
+    .main    { order: 2; }
+    .aside-2 { order: 3; }
+    footer  { order: 4; }
+  }
+  
+  body {
+    padding: 2em; 
+  }
+}

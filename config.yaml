@@ -1,0 +1,8 @@
+# cmsmock settings
+webfoldername: ./views # what is the name of the webroot in the deployment folder
+hostpath: http://localhost
+hostport: 3000
+mxtarget: http://localhost:8082
+proxy:
+    path: /mxs
+    mode: debug

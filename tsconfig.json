@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
+		"lib": ["es2016", "dom"],
+		"module": "commonjs",
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"pretty": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "es2016",
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"outDir": "dist",
+		"rootDir": "./src"
+	  },
+	"include": [
+		"src/*.ts",
+    	"src/**/*.ts", "src/scanfolder.ts.notued", "src/release.ts.notused", "src/iResponder.ts.notused", "src/fileresponder.ts.notused",
+	],
+	"exclude": [
+		"node_modules"
+	  ]
+}

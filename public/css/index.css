@@ -1,0 +1,55 @@
+.mockframe .wrapper {
+  display: flex;
+  flex-flow: row wrap; }
+
+.mockframe .wrapper > * {
+  padding: 10px;
+  flex: 1 100%; }
+
+.mockframe header {
+  text-align: left;
+  border-width: 2px;
+  border-color: green;
+  border-style: solid; }
+
+.mockframe footer {
+  border-width: 2px;
+  border-color: green;
+  border-style: solid; }
+
+.mockframe main {
+  text-align: left;
+  border-width: 2px;
+  border-color: blue;
+  border-style: solid; }
+
+.mockframe .aside-1 {
+  text-align: left;
+  border-width: 2px;
+  border-color: orange;
+  border-style: solid; }
+
+.mockframe .aside-2 {
+  text-align: left;
+  border-width: 2px;
+  border-color: orange;
+  border-style: solid; }
+
+@media all and (min-width: 600px) {
+  .mockframe .aside {
+    flex: 1 0 0; } }
+
+@media all and (min-width: 800px) {
+  .mockframe .main {
+    flex: 3 0px; }
+  .mockframe .aside-1 {
+    order: 1; }
+  .mockframe .main {
+    order: 2; }
+  .mockframe .aside-2 {
+    order: 3; }
+  .mockframe footer {
+    order: 4; } }
+
+.mockframe body {
+  padding: 2em; }

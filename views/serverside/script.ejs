@@ -1,0 +1,152 @@
+<script>
+    (function () {
+"use strict";
+var defaultConfig = {
+    files: {
+        js: [ "mxclientsystem/mxui/mxui.js" ],
+        css: []
+    },
+    cachebust: +new Date()
+};
+
+function request(url, params) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(params.method, url);
+
+    if (params.onLoad) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) {
+              return;
+            }
+            params.onLoad(xhr.status, xhr.statusText, xhr.responseText);
+        };
+    }
+
+    if (params.headers) {
+        for (var header in params.headers) {
+            xhr.setRequestHeader(header, params.headers[header]);
+        }
+    }
+
+    if (params.timeout) {
+        xhr.timeout = params.timeout;
+        xhr.ontimeout = params.onTimeout;
+    }
+
+    xhr.send(params.data);
+}
+
+function showError(message) {
+    document.getElementById("mxalert_message").textContent = message;
+    document.getElementById("mxalert_button").addEventListener("touchstart", function() {
+        window.location.reload();
+    });
+
+    document.getElementById("mxalert").style.display = "block";
+}
+
+window.mxapp = {
+    _appUrl: "",
+    _appConfig: null,
+    parameters: {},
+
+    _startup: function() {
+        window.dojoConfig = {
+            appbase: this._appUrl,
+            baseUrl: this._appUrl + "mxclientsystem/dojo/",
+                    cacheBust: this._appConfig.cachebust,
+            rtlRedirect: "index-rtl.html"
+        };
+
+        var head = document.getElementsByTagName("head")[0];
+
+        this._appConfig.files.css.forEach(function(href) {
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = this._appUrl + href + "?" + this._appConfig.cachebust;
+            head.appendChild(link);
+        }, this);
+
+        this._appConfig.files.js.forEach(function(href) {
+            var script = document.createElement("script");
+            script.src = this._appUrl + href + "?" + this._appConfig.cachebust;
+            head.appendChild(script);
+        }, this);
+    },
+
+    _getConfig: function(callback) {
+      callback(defaultConfig);
+      /*
+        var attempts = 20,
+            configUrl = this._appUrl + "components.json?v=" + (+new Date());
+
+        function fetchConfig(callback) {
+            request(configUrl, {
+                method: "get",
+                timeout: 5000,
+                onLoad: callback,
+                onTimeout: function() {
+                    showError("The connection timed out. Please try again later.");
+                }
+            });
+        }
+
+        fetchConfig(function(status, statusText, result) {
+            if (status == 200) {
+                callback(JSON.parse(result));
+            } else if (status == 404) {
+                // If config is not found, assume the default config
+                callback(defaultConfig);
+            } else if (status == 503) {
+                if (--attempts > 0) {
+                    // If the app is suspended, wait for it to wake up
+                    setTimeout(fetchConfig, 5000);
+                } else {
+                    showError("The application failed to wake up. Please try again later.");
+                }
+            } else {
+                showError("A connection error occurred (" + statusText + "). Please try again later.");
+            }
+        });
+      */
+    },
+
+    initialize: function(url) {
+        //construct origin from location
+        var origin = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+
+        // Make sure the url always ends with a /
+        this._appUrl = origin + url.replace(/\/?$/, "/");
+
+        this._getConfig(function(config) {
+                this._appConfig = config;
+                this._startup();
+            }.bind(this));
+    }
+};
+})();
+</script>
+<script type="text/javascript">
+    mxapp.parameters = {
+      "action": "inschrijven",
+      "pLoad": "5RSWpxJFnRSg8g5SC/sBq+A3a8zLlWkzBK8O1PEMAH+ycnjS9N1KIefdQNWLhvvlkE25DRZgwtHfczCPchvT+ULemRy+n+CkAyQrnHH7wPfWWGGIpcfW6QFVzw587AH3b4wwxLnAlmk0INhtvRd151qUnFYZ7/DCpFHgf71s0A6kXknn3JpoRjE1sLtkZw1c/71G8NQpBOjUuAKGdbyGotIt0LYH3wJibiOKRg/BSl/RdClL/4tNYKiduDztoHU7O5VELNIyNfY/ttav4FMwV0+S/pNd0V2t0cbZM2eEJYpYCYX1orRs+wyDvd6DLchTZCIwy9yb+DKk37GxMPBvtKCmnEColqWkB0seNCKncHPSLLT1TLooYCoS2IoNpMRpiKk+sgQErbZqyqGj/ZYl0hA6hjmZrZeWAQW+Fw8eo8jYLsDSSgWL7R5xqeHfaT+BoRuMbQhdV4Lb0E9pUajyZcXx80edFYsRZ08j4G4a27XqAnD42AvTWNqkHfC+yUFP90Sli+pFffVLq3Rpvt6L10sSlypZhp++E3f9Qml/SgPVCioAycrxgfdGQgjASX3ZproYGTusUlNbNYQWU5kROHRyKkqWMTicHW+SZqKSBFHBymOnZESCls5XCowprtZXqQ0X72ON8JVAMdBNG+XzchvHX1movqTXTdWZgDADUX9OpiyXWbH742xz5GatFsG8gMpR8LVGtgcBhAM6QQ1DvSkuf5RQ+/lk44geVChEY6P5ncAqMZWDGITZZIxUvfYywLSP9/dL+27VX4LPAi4a0ZyN51s0f4+nZJw/88gvWTjvBbO8SXvN2FmAmg0L8BlUWTs260LXPbtC8kfXgPADPWBrYk2gBmtZw8zpwEZkH27yMoLfHiMt9zg4gkxe4NtzenDHEJF2i4XPx6qMwWzRRhqkUrb+C+LQ+ovCcpBDkNxji+IFz8n8YwWUkla9KHw11E5E0N1KGv5bE/ngEc5xatTGDF4ZAxnEtnlQaMcKZlILbwNi1U4XmRw+zdOYo31SS340uVRadQKu9YdOrLgN6Q=="
+    };
+  </script>
+  
+  <script type="text/javascript">
+    //<![CDATA[
+    
+        //
+        (function() {
+// your page initialization code here
+// the DOM will be available here
+if (window.mxapp !== undefined) {
+            mxapp.initialize("/mxembedd");
+          }
+})();
+          
+        
+        //
+      
+    //]]>
+    </script>
